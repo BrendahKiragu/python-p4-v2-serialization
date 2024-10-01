@@ -20,6 +20,17 @@ def index():
     body = {'message': 'Welcome to the pet directory!'}
     return make_response(body, 200)
 
+@app.route('/pets/<int:id>')
+def pet_by_id(id):
+    pet = Pet.query.filter(Pet.id == id).first()
+
+    if pet:
+        resp_body = pet.to_dict()
+        resp_status = 200
+    else:
+        resp_body = {'message': "Pet {id} not found."}    
+        resp_status = 404
+    return make_response(resp_body, resp_status)    
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
