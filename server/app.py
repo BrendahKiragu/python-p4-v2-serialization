@@ -32,5 +32,19 @@ def pet_by_id(id):
         resp_status = 404
     return make_response(resp_body, resp_status)    
 
+@app.route('/species/<string:species>')
+def pet_by_species(species):
+    pets = []
+
+    for pet in Pet.query.filter_by(species=species):
+        pets.append(pet.to_dict())
+    resp_body = {
+        'count': len(pets),
+        'pets': pets
+    }    
+    return make_response(resp_body, 200)
+  
+    
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
